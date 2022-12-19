@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply shadow appearance-none border rounded  py-2 px-3 md:py-4 md:px-5 text-gray-700 mt-6 leading-tight focus:outline-none w-full;
+}
+.submit-button {
+  @apply p-4 border w-full rounded-xl font-bold text-xl hover:scale-105 duration-200 mt-6 shadow-xl;
+}
+@layer base {
+  h1 {
+    @apply text-center font-bold text-4xl md:text-5xl;
+  }
+}
