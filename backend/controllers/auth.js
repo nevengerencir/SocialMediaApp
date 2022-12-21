@@ -10,6 +10,7 @@ const getMe = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     sucess: true,
     data: req.user,
+    name: req.user.name,
   });
 });
 
@@ -64,5 +65,6 @@ const sendTokenResponse = (user, statusCode, res) => {
   res.status(statusCode).cookie("token", token, options).json({
     sucess: true,
     token,
+    name: user.name,
   });
 };

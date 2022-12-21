@@ -1,10 +1,22 @@
 import { Link } from "react-router-dom";
 import { FaQuestionCircle, FaTicketAlt } from "react-icons/fa";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 function Home() {
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <section className="text-center">
-        <h1>What do you need help with?</h1>
+        <h1>{user ? `Welcome back ${user.name}!` : ""}</h1>
         <p className="opacity-40  text-2xl mt-4">
           Please choose from an option below
         </p>

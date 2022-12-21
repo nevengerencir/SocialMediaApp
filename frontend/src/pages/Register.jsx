@@ -4,8 +4,26 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { register, reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/shared/Spinner";
 
 function Register() {
+  const { user, isLoading, isSucess, message, isError } = useSelector(
+    (state) => state.auth
+  );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (user) {
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [isError, isSucess, user, message, navigate, dispatch]);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,23 +31,7 @@ function Register() {
     password2: "",
   });
 
-  const { user, isLoading, isSucess, message, isError } = useSelector(
-    (state) => state.auth
-  );
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const { name, email, password, password2 } = formData;
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    if (isSucess || user) {
-      navigate("/");
-    }
-    dispatch(reset());
-  }, [isError, isSucess, user, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -51,13 +53,19 @@ function Register() {
       dispatch(register(userData));
     }
   };
-
+  if (isLoading) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <>
       <section className=" text-center font-extrabold">
         <h1>
           <FaUser className="inline mb-2 mx-1 " />
-          Register {user}
+          Register
         </h1>
         <p className="opacity-40 mt-2 text-2xl">Please create an account</p>
       </section>

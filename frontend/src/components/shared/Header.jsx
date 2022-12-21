@@ -4,17 +4,25 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, reset } from "../../features/auth/authSlice";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  const onLogout = () => {
+  const onLogout = async () => {
     dispatch(logout());
     dispatch(reset());
-    navigate("/");
+    navigate("/login");
+  };
+
+  const handleHome = () => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -22,9 +30,7 @@ function Header() {
       <header className="py-4 md:p-4">
         {" "}
         <div className="flex justify-between">
-          <Link to="/" className="">
-            <span>Support app</span>
-          </Link>
+          <span onClick={handleHome}>Support app</span>
 
           <ul className="flex">
             {user ? (
