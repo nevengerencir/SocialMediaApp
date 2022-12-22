@@ -22,13 +22,13 @@ function Home() {
         </p>
       </section>
       <div className="max-w-md mx-auto">
-        <Link to="/new-ticket">
+        <Link to="/profile">
           <button className="submit-button  border-black text-black">
             <FaQuestionCircle className="inline mx-2 " />
-            Create New Ticket
+            Your profile
           </button>
         </Link>
-        <Link to="/new-ticket">
+        <Link to="#">
           <button className="submit-button  bg-black text-white">
             <FaTicketAlt className="inline mx-2 " />
             Create New Ticket

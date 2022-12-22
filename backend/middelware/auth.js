@@ -5,8 +5,12 @@ const User = require("../models/User");
 
 const protect = asyncHandler(async (req, rex, next) => {
   let token;
-
-  token = req.cookies.token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else token = req.cookies.token;
   // Make sure token exists
   if (!token) {
     return next(new ErrorResponse("Not authorized to access this route", 401));
@@ -14,7 +18,7 @@ const protect = asyncHandler(async (req, rex, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
+    console.log(decoded.id);
     req.user = await User.findById(decoded.id);
 
     next();

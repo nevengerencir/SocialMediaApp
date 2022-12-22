@@ -44,12 +44,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-module.exports = {
-  registerUser,
-  loginUser,
-  getMe,
-};
-
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
   const options = {
@@ -67,4 +61,10 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
     name: user.name,
   });
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getMe,
 };
