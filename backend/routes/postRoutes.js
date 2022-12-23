@@ -17,10 +17,9 @@ const {
 //     sucess:true,
 //     data: req.file.path
 // })}) if using multer - disable file uploader first
-router
-  .route("/")
-  .post(protect, upload.single("image"), createPost)
-  .get(protect, getPosts);
+router.route("/").post(protect, createPost).get(protect, getPosts);
+
+router.route("/picture").post(protect, upload.single("image"), createPost);
 
 // router.route("/:userId").get(protect, getPostsByUser);
 

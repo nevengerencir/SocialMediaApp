@@ -2,8 +2,9 @@ const ErrorResponse = require("../utils/errorResponse");
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
-
+  console.log(err);
   error.message = err.message;
+
   if (err.message === "Unexpected field") {
     error = new ErrorResponse(
       "Please re-check the file you are trying to send",

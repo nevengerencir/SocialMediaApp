@@ -6,12 +6,11 @@ const PostSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
-      immutable: true,
     },
     img: {
       type: String,
-      unique: true,
       immutable: true,
+      default: "",
     },
     text: {
       type: String,
