@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Spinner from "../components/shared/Spinner";
 import { reset } from "../features/post/postSlice";
+import BackButton from "../components/shared/BackButton";
+import PostList from "../components/PostList";
 
 function Profile() {
   const { user } = useSelector((state) => state.auth);
@@ -19,18 +21,16 @@ function Profile() {
       toast.error(message);
     }
     if (isSucess) {
-      toast.success("Sucess");
+      dispatch(reset());
     }
-
-    dispatch(reset());
-  }, [isError, dispatch, isSucess, message, reset]);
+  }, [isError, dispatch, isSucess, message]);
 
   return (
     <>
-      <h1 className="text-center md:text-left">Your profile</h1>
-
-      {isLoading ? <Spinner /> : ""}
-      <PostForm />
+      <BackButton url="/" />
+      <h1 className="text-center ">Your profile</h1>
+      {isLoading ? <Spinner /> : <PostForm />}
+      <PostList />
     </>
   );
 }
