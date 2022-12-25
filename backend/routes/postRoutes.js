@@ -23,5 +23,9 @@ router.route("/picture").post(protect, upload.single("image"), createPost);
 
 // router.route("/:userId").get(protect, getPostsByUser);
 
-router.route("/:id").put(protect, updatePost).delete(protect, deletePost);
+router
+  .route("/:postId")
+  .put(protect, updatePost)
+  .delete(protect, deletePost)
+  .get(protect, getPosts);
 module.exports = router;

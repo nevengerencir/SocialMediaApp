@@ -9,15 +9,25 @@ const ErrorResponse = require("../utils/errorResponse");
 //  @route GET /api/post/
 //  @access Private
 const getPosts = asyncHandler(async (req, res, next) => {
-  let data;
+  console.log(req.params);
+  if (req.params.postId) {
+    data = await Posts.findById(req.params.postId).populate("user", "name");
+    console.log(3);
+  }
   if (req.params.userId) {
     const user = await User.findById(req.params.userId);
     if (!user) {
       return next(new ErrorResponse(`User not found`, 401));
     }
-    data = await Posts.find({ id: req.params.userId }).populate("user", "name");
-  } else {
+    console.log(2);
+    return (data = await Posts.find({ id: req.params.userId }).populate(
+      "user",
+      "name"
+    ));
+  }
+  if (!req.params.postId) {
     data = await Posts.find().populate("user", "name");
+    console.log(0);
   }
   res.status(200).json({
     sucess: true,

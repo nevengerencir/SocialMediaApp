@@ -27,10 +27,17 @@ const getPosts = async (token) => {
   });
   return response.data;
 };
+const getPost = async (postId, token) => {
+  const response = await axios.get(`${API_URL}/${postId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
 
 const postService = {
   createPost,
   getPosts,
+  getPost,
 };
 
 export default postService;

@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/shared/PrivateRoute";
+import Post from "./pages/Post";
 function App() {
   return (
     <>
@@ -20,6 +21,9 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="/post/:postId" element={<PrivateRoute />}>
+              <Route path="/post/:postId" element={<Post />} />
             </Route>
           </Routes>
         </div>

@@ -8,10 +8,10 @@ function PostList() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPosts());
-  }, [dispatch, post]);
+  }, []);
   if (isLoading) {
     return null;
   }
-  return posts.map((post) => <PostItem post={post} />);
+  return posts.map((post) => <PostItem post={post} key={post._id} />);
 }
 export default PostList;

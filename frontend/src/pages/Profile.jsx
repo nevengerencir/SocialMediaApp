@@ -23,7 +23,7 @@ function Profile() {
     if (isSucess) {
       dispatch(reset());
     }
-  }, [isError, dispatch, isSucess, message]);
+  }, [isError, isSucess, message]);
 
   return (
     <>
