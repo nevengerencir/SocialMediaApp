@@ -16,7 +16,7 @@ function Home() {
   return (
     <>
       <section className="text-center">
-        <h1>{user ? `Welcome back ${user.name}!` : ""}</h1>
+        <h1>{user ? `Welcome back ${user.user.name}!` : ""}</h1>
         <p className="opacity-40  text-2xl mt-4">
           Please choose from an option below
         </p>

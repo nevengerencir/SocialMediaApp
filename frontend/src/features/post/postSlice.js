@@ -27,6 +27,22 @@ export const createPost = createAsyncThunk(
   }
 );
 
+// Delete a post
+export const deletePost = createAsyncThunk(
+  "posts/delete",
+  async (postId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await postService.deletePost(postId, token);
+    } catch (err) {
+      console.log(err.response.data.message);
+
+      const message = err.response.data.message || err.toString();
+      return thunkAPI.rejectWithValue(message || "error");
+    }
+  }
+);
+
 // Get all posts
 
 export const getPosts = createAsyncThunk(
@@ -110,6 +126,19 @@ export const postSlice = createSlice({
         state.post = {};
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSucess = true;
+        state.post = action.payload;
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deletePost.pending, (state) => {
+        state.isLoading = true;
       });
   },
 });

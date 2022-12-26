@@ -28,7 +28,7 @@ function Post() {
   }
   return (
     <>
-      <BackButton url={"/"} />
+      <BackButton url={"/profile"} />
       <PostItem post={post} />
     </>
   );

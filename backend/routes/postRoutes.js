@@ -3,6 +3,9 @@ const protect = require("../middelware/auth");
 const router = express.Router({ mergeParams: true });
 const upload = require("../utils/cloudinaryMulterStorage");
 
+const commentRouter = require("./commentRoutes");
+router.use("/:postId/comments", commentRouter);
+
 const {
   updatePost,
   deletePost,

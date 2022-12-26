@@ -1,32 +1,18 @@
-const Posts = require("../models/Post");
-const User = require("../models/User");
+const Comment = require("../models/Comment");
+const Post = require("../models/Post");
+const mongoose = require("mongoose");
 
 const asyncHandler = require("../middelware/asyncHandler");
-const { find } = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
 
-//  @desc Get all posts
-//  @route GET /api/post/
+//  @desc Get all comments for a specific post
+//  @route GET /api/post/:postId
 //  @access Private
-const getPosts = asyncHandler(async (req, res, next) => {
-  if (req.params.postId) {
-    data = await Posts.findById(req.params.postId).populate("comments");
-    console.log(3);
-  }
-  if (req.params.userId) {
-    const user = await User.findById(req.params.userId);
-    if (!user) {
-      return next(new ErrorResponse(`User not found`, 401));
-    }
-    console.log(2);
-    return (data = await Posts.find({ id: req.params.userId }).populate(
-      "user comments"
-    ));
-  }
-  if (!req.params.postId) {
-    data = await Posts.find().populate("user comments");
-    console.log(0);
-  }
+const getComments = asyncHandler(async (req, res, next) => {
+  const data = await Comment.find({ id: req.params.postId }).populate(
+    "user",
+    "img"
+  );
   res.status(200).json({
     sucess: true,
     data,
@@ -51,18 +37,17 @@ const updatePost = asyncHandler(async (req, res, next) => {
   });
 });
 
-//  @desc Create a post
-//  @route POST /api/post/
+//  @desc Create a comment
+//  @route POST /api/post/:postid/comment
 //  @access Private
-const createPost = asyncHandler(async (req, res, next) => {
-  if (typeof req.file !== "undefined") {
-    req.body.img = req.file.path;
-  }
+const createComment = asyncHandler(async (req, res, next) => {
+  console.log(req.params.postId);
   req.body.user = req.user.id;
+  req.body.post = mongoose.Types.ObjectId(req.params.postId);
+  console.log(req.body.post);
 
-  console.log(req.user.id);
-  // req.body.img = req.file.path;
-  let data = await Posts.create(req.body);
+  //   // req.body.img = req.file.path;
+  let data = await Comment.create(req.body);
 
   res.status(200).json({
     sucess: true,
@@ -85,8 +70,6 @@ const deletePost = asyncHandler(async (req, res, next) => {
   });
 });
 module.exports = {
-  createPost,
-  getPosts,
-  updatePost,
-  deletePost,
+  createComment,
+  getComments,
 };

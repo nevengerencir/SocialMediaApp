@@ -25,6 +25,11 @@ const UserSchema = new mongoose.Schema(
       minlength: 6,
       select: false,
     },
+    img: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/drjszu0so/image/upload/v1672048070/DEV/jdxihbli8g6ul5wmslta.png",
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
   },

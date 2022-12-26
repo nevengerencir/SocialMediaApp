@@ -8,7 +8,7 @@ function PostList() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPosts());
-  }, []);
+  }, [post]);
   if (isLoading) {
     return null;
   }
