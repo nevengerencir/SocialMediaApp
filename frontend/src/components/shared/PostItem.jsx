@@ -68,7 +68,7 @@ function PostItem({ post }) {
         <FaThumbsDown />
       </div>
       <div className={`${isHidden ? "hidden" : ""}`}>
-        <PostCommentForm />
+        <PostCommentForm id={post._id} />
         <div className="mt-6 p-2 ">
           {post.comments.map((comment) => (
             <Comment

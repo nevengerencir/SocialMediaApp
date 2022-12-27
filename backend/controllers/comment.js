@@ -6,16 +6,17 @@ const asyncHandler = require("../middelware/asyncHandler");
 const ErrorResponse = require("../utils/errorResponse");
 
 //  @desc Get all comments for a specific post
-//  @route GET /api/post/:postId
+//  @route GET /api/post/:postId/comments
 //  @access Private
 const getComments = asyncHandler(async (req, res, next) => {
-  const data = await Comment.find({ id: req.params.postId }).populate(
+  const data = await Comment.find({ post: req.params.postId }).populate(
     "user",
     "img"
   );
   res.status(200).json({
     sucess: true,
     data,
+    post: req.params.postId,
   });
 });
 
@@ -41,10 +42,9 @@ const updatePost = asyncHandler(async (req, res, next) => {
 //  @route POST /api/post/:postid/comment
 //  @access Private
 const createComment = asyncHandler(async (req, res, next) => {
-  console.log(req.params.postId);
   req.body.user = req.user.id;
   req.body.post = mongoose.Types.ObjectId(req.params.postId);
-  console.log(req.body.post);
+  console.log(req.body);
 
   //   // req.body.img = req.file.path;
   let data = await Comment.create(req.body);

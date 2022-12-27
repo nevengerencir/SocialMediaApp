@@ -11,7 +11,6 @@ function PostForm() {
 
   const onChange = (e) => {
     {
-      console.log(123);
       setPostData((prevState) => ({
         ...prevState,
         [e.target.name]: e.target.value,

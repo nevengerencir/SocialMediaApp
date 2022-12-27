@@ -27,6 +27,23 @@ export const createPost = createAsyncThunk(
   }
 );
 
+// Create a comment for a post
+export const createComment = createAsyncThunk(
+  "posts/createComment",
+  async (commentData, thunkAPI) => {
+    console.log(`post slice ${commentData.text}`);
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await postService.createComment(commentData, token);
+    } catch (err) {
+      console.log(err.response.data.message);
+
+      const message = err.response.data.message || err.toString();
+      return thunkAPI.rejectWithValue(message || "error");
+    }
+  }
+);
+
 // Delete a post
 export const deletePost = createAsyncThunk(
   "posts/delete",
@@ -139,6 +156,18 @@ export const postSlice = createSlice({
       })
       .addCase(deletePost.pending, (state) => {
         state.isLoading = true;
+      })
+      .addCase(createComment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createComment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSucess = true;
+      })
+      .addCase(createComment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

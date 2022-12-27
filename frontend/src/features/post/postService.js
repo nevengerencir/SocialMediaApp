@@ -20,6 +20,14 @@ const createPost = async (postData, token) => {
   console.log(response.data);
   return response.data.data;
 };
+// Create a comment
+const createComment = async (commentData, token) => {
+  const { id } = commentData;
+  const response = await axios.post(`${API_URL}/${id}/comments`, commentData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data.data;
+};
 
 const getPosts = async (token) => {
   const response = await axios.get(API_URL, {
@@ -46,6 +54,7 @@ const postService = {
   getPosts,
   getPost,
   deletePost,
+  createComment,
 };
 
 export default postService;

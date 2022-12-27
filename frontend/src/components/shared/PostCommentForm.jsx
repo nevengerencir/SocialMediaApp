@@ -1,8 +1,28 @@
 import { useState } from "react";
-function PostCommentForm() {
-  const [commentData, setCommentData] = useState("");
+import { useDispatch, useSelector } from "react-redux";
+import { createComment } from "../../features/post/postSlice";
+
+function PostCommentForm({ id }) {
+  const dispatch = useDispatch();
+
+  const [commentData, setCommentData] = useState({
+    id: id,
+    text: "",
+  });
+
   const onChange = (e) => {
-    setCommentData(e.target.value);
+    {
+      setCommentData((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createComment(commentData));
+    console.log(commentData);
   };
 
   return (
@@ -11,12 +31,13 @@ function PostCommentForm() {
       <div>
         {/* Form to add a comment and show comments */}
 
-        <form className="max-w-full ">
+        <form className="max-w-full " onSubmit={onSubmit}>
           <div className="flex text-md">
             <input
+              name="text"
               className="input"
               type="text"
-              value={commentData}
+              value={commentData.comment}
               onChange={onChange}
               placeholder="Add you comment here"
             />
