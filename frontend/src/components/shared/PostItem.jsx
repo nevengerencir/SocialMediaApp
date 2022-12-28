@@ -1,5 +1,6 @@
 import { FaRegCommentAlt, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import Comment from "./Comment";
+import CommentList from "./CommentList";
+import Spinner from "../shared/Spinner";
 import { Link } from "react-router-dom";
 import { FaRegTrashAlt, FaWindows } from "react-icons/fa";
 import PostCommentForm from "./PostCommentForm";
@@ -9,11 +10,52 @@ import { useState } from "react";
 
 function PostItem({ post }) {
   const [isHidden, setHidden] = useState(true);
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const deleteItem = { post };
+
+  const deleteComment = async (commentId) => {
+    try {
+      setLoading(true);
+      await fetch(`http://localhost:3000/api/comment/${commentId}`, {
+        method: "DELETE",
+      });
+      setComments((prev) =>
+        prev.filter((element) => element._id !== `${commentId}`)
+      );
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addComment = async (commentData, token) => {
+    const { id } = commentData;
+    console.log( id)
+
+    try {
+      setLoading(true);
+      const res = await fetch(`http://localhost:3000/api/posts/${id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commentData),
+      });
+      const comment = await res.json();
+      console.log(comment.data);
+      setComments((prev) => [...prev, comment.data]);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+    
+
+  };
 
   const onClick = () => {
     if (window.confirm("Are you sure?")) {
@@ -22,7 +64,27 @@ function PostItem({ post }) {
     return;
   };
 
-  return (
+  const fetchComments = async () => {
+    if (isHidden)
+      try {
+        setLoading(true);
+        setHidden(false);
+        const res = await fetch(
+          `http://localhost:3000/api/posts/${post._id}/comments`
+        );
+        const comments = await res.json();
+        setComments(comments.data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    else {
+      setHidden(true);
+      setComments([]);
+    }
+  };
+  
+    return (
     <div className="bg-white  shadow-xl rounded-xl border my-4 p-4 relative">
       <div className=" mb-10 md:flex md:justify-between relative">
         <Link to={post.user._id}>
@@ -33,9 +95,7 @@ function PostItem({ post }) {
           <span className=" text-2xl font-bold inline">{post.user.name}</span>
         </Link>
         <div className="space-x-4">
-          <span className="">
-            {new Date(post.createdAt).toLocaleString("en-US")}
-          </span>
+          <span>{new Date(post.createdAt).toLocaleString("en-US")}</span>
           {user.user._id === post.user._id ? (
             <FaRegTrashAlt className="inline text-xl " onClick={onClick} />
           ) : null}
@@ -49,9 +109,9 @@ function PostItem({ post }) {
               className="w-80 hidden md:block
        md:max-w-xl shadow-xl"
             />
-          ) : (
-            ""
-          )}
+          ) : 
+            ("")
+        }
           <div className=" rounded-2xl ml-4 w-full shadow-xl p-4 ">
             <p className="text-xl ">{post.text}</p>
           </div>
@@ -59,27 +119,19 @@ function PostItem({ post }) {
       </Link>
       {}
       <div className="flex justify-end mt-8 space-x-4 text-xl ">
-        <FaRegCommentAlt
-          onClick={() => {
-            setHidden(!isHidden);
-          }}
-        />
+        <FaRegCommentAlt onClick={fetchComments} />
         <FaThumbsUp />
         <FaThumbsDown />
       </div>
       <div className={`${isHidden ? "hidden" : ""}`}>
-        <PostCommentForm id={post._id} />
+        <PostCommentForm id={post._id} addComment={addComment} />
+
         <div className="mt-6 p-2 ">
-          {post.comments.map((comment) => (
-            <Comment
-              key={comment._id}
-              comment={comment}
-              img={
-                "https://res.cloudinary.com/drjszu0so/image/upload/v1672048070/DEV/jdxihbli8g6ul5wmslta.png"
-              }
-              name={"user"}
-            />
-          ))}{" "}
+          {loading ? (
+            <Spinner />
+          ) : (
+            <CommentList comments={comments} deleteComment={deleteComment} />
+          )}
         </div>
       </div>
     </div>

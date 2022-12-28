@@ -11,6 +11,7 @@ const { urlencoded } = require("body-parser");
 
 const users = require("./routes/userRoutes");
 const posts = require("./routes/postRoutes");
+const comments = require("./routes/commentRoutes");
 
 const PORT = process.env.PORT || 8000;
 
@@ -26,6 +27,7 @@ app.use(urlencoded({ extended: false }));
 // setting up my routes
 app.use("/api/users", users);
 app.use("/api/posts", posts);
+app.use("/api/comment", comments);
 
 app.use(errorHandler);
 

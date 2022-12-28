@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "../../features/post/postSlice";
 
-function PostCommentForm({ id }) {
+function PostCommentForm({ id, addComment }) {
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
 
   const [commentData, setCommentData] = useState({
     id: id,
@@ -21,8 +23,10 @@ function PostCommentForm({ id }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(createComment(commentData));
-    console.log(commentData);
+    console.log(commentData, user.token)
+    addComment(commentData, user.token)
+    // dispatch(createComment(commentData));
+    
   };
 
   return (

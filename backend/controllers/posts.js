@@ -10,7 +10,7 @@ const ErrorResponse = require("../utils/errorResponse");
 //  @access Private
 const getPosts = asyncHandler(async (req, res, next) => {
   if (req.params.postId) {
-    data = await Posts.findById(req.params.postId).populate("comments");
+    data = await Posts.findById(req.params.postId).populate("comments user");
     console.log(3);
   }
   if (req.params.userId) {

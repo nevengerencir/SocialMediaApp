@@ -11,7 +11,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const getComments = asyncHandler(async (req, res, next) => {
   const data = await Comment.find({ post: req.params.postId }).populate(
     "user",
-    "img"
+    "name img"
   );
   res.status(200).json({
     sucess: true,
@@ -47,23 +47,24 @@ const createComment = asyncHandler(async (req, res, next) => {
   console.log(req.body);
 
   //   // req.body.img = req.file.path;
-  let data = await Comment.create(req.body);
-
+  let data = await Comment.create(req.body)
+data = await data.populate("user","name img");
   res.status(200).json({
     sucess: true,
     data,
   });
 });
 
-//  @desc Delete a post by id
-//  @route GET /api/post/:id
+//  @desc Delete a comment by id
+//  @route GET /api/comment/:commentId
 //  @access Private
-const deletePost = asyncHandler(async (req, res, next) => {
-  const post = await Posts.findById(req.params.postId).populate("user");
-  if (post.user._id.toString() !== req.user.id) {
+const deleteComment = asyncHandler(async (req, res, next) => {
+  const comment = await Comment.findById(req.params.commentId).populate("user");
+  console.log("trying");
+  if (comment.user._id.toString() !== req.user.id) {
     return next(new ErrorResponse("Permission denied", 403));
   }
-  await Posts.findByIdAndRemove(req.params.postId);
+  await Comment.findByIdAndDelete(req.params.commentId);
   res.status(200).json({
     sucess: true,
     data: {},
@@ -72,4 +73,5 @@ const deletePost = asyncHandler(async (req, res, next) => {
 module.exports = {
   createComment,
   getComments,
+  deleteComment,
 };
