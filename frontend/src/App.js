@@ -13,20 +13,23 @@ function App() {
   return (
     <>
       <Router>
-        <div className="max-w-6xl mx-auto px-4">
+
+   <div className="max-w-6xl mx-auto px-4 ">
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/profile" element={<PrivateRoute />}>
-              <Route path="/profile" element={<Profile />} />
-            </Route>
+            
             <Route path="/post/:postId" element={<PrivateRoute />}>
               <Route path="/post/:postId" element={<Post />} />
             </Route>
+            <Route path="/profile/:userId" element={<PrivateRoute />}>
+              <Route path="/profile/:userId" element={<Profile />} />
+            </Route>
           </Routes>
         </div>
+       
       </Router>
       <ToastContainer />
     </>

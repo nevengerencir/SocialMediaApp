@@ -29,10 +29,17 @@ const createComment = async (commentData, token) => {
   return response.data.data;
 };
 
-const getPosts = async (token) => {
-  const response = await axios.get(API_URL, {
+const getPosts = async (token, userId) => {
+
+ let query = API_URL
+  if (userId !== ''){
+    query= `${API_URL}?user=${userId}`
+    console.log(query)
+  }
+  const response = await axios.get(query, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  console.log(query)
   return response.data;
 };
 const getPost = async (postId, token) => {

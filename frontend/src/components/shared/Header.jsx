@@ -12,8 +12,10 @@ function Header() {
   const { user } = useSelector((state) => state.auth);
 
   const onLogout = async () => {
+    try{
     dispatch(logout());
-    dispatch(reset());
+    dispatch(reset());}
+    catch(err){console.log(err)}
     navigate("/login");
   };
 
@@ -26,12 +28,17 @@ function Header() {
   };
 
   return (
-    <div className="mb-10  text-xl md:text-xl ">
-      <header className="py-4 md:p-4">
+    <div className="mb-10  text-xl md:text-xl  ">
+      <header className="py-4 md:p-4 sticky top-0">
         {" "}
         <div className="flex justify-between">
-          <span onClick={handleHome}>Support app</span>
+          <div className="space-x-4">
+          <span onClick={handleHome}>Homepage</span>
+    {user ? <Link to={`/profile/${user.user._id}`}>
+    <span >Your profile</span>
 
+                  </Link> : null }
+                  </div>
           <ul className="flex">
             {user ? (
               <li>
@@ -56,9 +63,7 @@ function Header() {
                     Register
                   </Link>
                 </li>
-                <li>
-                  <Link to="/login"></Link>
-                </li>
+               
               </>
             )}
           </ul>

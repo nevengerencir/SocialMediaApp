@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { getPosts } from "../features/post/postSlice";
 import PostItem from "./shared/PostItem";
 
-function PostList() {
+function PostList({userId}) {
   const { post, isLoading, posts } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPosts(userId));
   }, [post]);
   if (isLoading) {
     return null;

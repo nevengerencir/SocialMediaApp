@@ -1,5 +1,5 @@
 import PostForm from "../components/shared/PostForm";
-
+import {useParams} from 'react-router-dom'
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -9,6 +9,8 @@ import BackButton from "../components/shared/BackButton";
 import PostList from "../components/PostList";
 
 function Profile() {
+
+  const {userId} = useParams()
   const { user } = useSelector((state) => state.auth);
 
   const { isLoading, isError, isSucess, message } = useSelector(
@@ -23,14 +25,16 @@ function Profile() {
     if (isSucess) {
       dispatch(reset());
     }
-  }, [isError, isSucess, message]);
+  }, []);
+
+ 
 
   return (
     <>
       <BackButton url="/" />
       <h1 className="text-center ">Your profile</h1>
-      {isLoading ? <Spinner /> : <PostForm />}
-      <PostList />
+      {user.user._id === userId ?   <PostForm /> : null}
+      <PostList userId={userId} />
     </>
   );
 }

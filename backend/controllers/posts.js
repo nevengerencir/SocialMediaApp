@@ -9,29 +9,30 @@ const ErrorResponse = require("../utils/errorResponse");
 //  @route GET /api/post/
 //  @access Private
 const getPosts = asyncHandler(async (req, res, next) => {
+ 
   if (req.params.postId) {
-    data = await Posts.findById(req.params.postId).populate("comments user");
+    console.log(req.params.postId)
+    let data = await Posts.findById(req.params.postId).populate("user comments")
+    res.status(200).json({
+      data
+    });}
     console.log(3);
-  }
-  if (req.params.userId) {
-    const user = await User.findById(req.params.userId);
-    if (!user) {
-      return next(new ErrorResponse(`User not found`, 401));
-    }
-    console.log(2);
-    return (data = await Posts.find({ id: req.params.userId }).populate(
-      "user comments"
-    ));
-  }
-  if (!req.params.postId) {
-    data = await Posts.find().populate("user comments");
-    console.log(0);
-  }
-  res.status(200).json({
-    sucess: true,
-    data,
-  });
-});
+    res.status(200).json(res.advancedResults);})
+  // }
+  // if (req.params.userId) {
+  //   const user = await User.findById(req.params.userId);
+  //   if (!user) {
+  //     return next(new ErrorResponse(`User not found`, 401));
+  //   }
+  //   console.log(2);
+  //   return (data = await Posts.find({ id: req.params.userId }).populate(
+  //     "user comments"
+  //   ));
+  // }
+  // if (!req.params.postId) {
+  //   data = await Posts.find().populate("user comments");
+  //   console.log(0);
+  // }
 
 //  @desc Update a post by id
 //  @route GET /api/post/:id

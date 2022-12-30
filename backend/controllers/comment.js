@@ -18,7 +18,7 @@ const getComments = asyncHandler(async (req, res, next) => {
     data,
     post: req.params.postId,
   });
-});
+})
 
 //  @desc Update a post by id
 //  @route GET /api/post/:id
@@ -44,9 +44,6 @@ const updatePost = asyncHandler(async (req, res, next) => {
 const createComment = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
   req.body.post = mongoose.Types.ObjectId(req.params.postId);
-  console.log(req.body);
-
-  //   // req.body.img = req.file.path;
   let data = await Comment.create(req.body)
 data = await data.populate("user","name img");
   res.status(200).json({

@@ -27,10 +27,10 @@ function Post() {
     return <Spinner />;
   }
   return (
-    <>
-      <BackButton url={"/profile"} />
+    <div className="h-screen">
+      <BackButton url={"/"} />
       <PostItem post={post} />
-    </>
+      </div>
   );
 }
 export default Post;

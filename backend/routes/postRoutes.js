@@ -3,6 +3,10 @@ const protect = require("../middelware/auth");
 const router = express.Router({ mergeParams: true });
 const upload = require("../utils/cloudinaryMulterStorage");
 
+const advancedResults = require('../middelware/advancedResult'
+)
+const Post = require('../models/Post')
+
 const commentRouter = require("./commentRoutes");
 router.use("/:postId/comments", commentRouter);
 
@@ -20,7 +24,7 @@ const {
 //     sucess:true,
 //     data: req.file.path
 // })}) if using multer - disable file uploader first
-router.route("/").post(protect, createPost).get(protect, getPosts);
+router.route("/").post(protect, createPost).get(protect,advancedResults(Post, 'user comments'), getPosts);
 
 router.route("/picture").post(protect, upload.single("image"), createPost);
 

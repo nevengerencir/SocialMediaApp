@@ -49,10 +49,12 @@ export const deletePost = createAsyncThunk(
 
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
-  async (_, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await postService.getPosts(token);
+      const token =  thunkAPI.getState().auth.user.token;
+      const userId = id || ''
+console.log(userId)
+      return await postService.getPosts(token,userId);
     } catch (err) {
       console.log(err.response.data.message);
       const message = err.response.data.message || err.toString();
@@ -60,6 +62,9 @@ export const getPosts = createAsyncThunk(
     }
   }
 );
+
+
+
 export const getPost = createAsyncThunk(
   "posts/getPost",
   async (postId, thunkAPI) => {

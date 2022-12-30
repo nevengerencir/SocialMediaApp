@@ -19,6 +19,7 @@ function PostItem({ post }) {
   const deleteItem = { post };
 
   const deleteComment = async (commentId) => {
+  
     try {
       setLoading(true);
       await fetch(`http://localhost:3000/api/comment/${commentId}`, {
@@ -47,8 +48,7 @@ function PostItem({ post }) {
         body: JSON.stringify(commentData),
       });
       const comment = await res.json();
-      console.log(comment.data);
-      setComments((prev) => [...prev, comment.data]);
+      setComments((prev) => [comment.data, ...prev ]);
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -65,6 +65,7 @@ function PostItem({ post }) {
   };
 
   const fetchComments = async () => {
+    
     if (isHidden)
       try {
         setLoading(true);
@@ -73,6 +74,7 @@ function PostItem({ post }) {
           `http://localhost:3000/api/posts/${post._id}/comments`
         );
         const comments = await res.json();
+        console.log(comments)
         setComments(comments.data);
         setLoading(false);
       } catch (err) {
@@ -83,14 +85,16 @@ function PostItem({ post }) {
       setComments([]);
     }
   };
-  
+  if(!user){
+    return null
+  }
     return (
     <div className="bg-white  shadow-xl rounded-xl border my-4 p-4 relative">
       <div className=" mb-10 md:flex md:justify-between relative">
-        <Link to={post.user._id}>
+        <Link to={`/profile/${post.user._id}`}>
           <img
             src={post.user.img}
-            className="w-20 rounded-full inline mr-4 -ml-2"
+            className="w-20 rounded-full inline mr-4 -ml-2 hover:scale-105 duration-700"
           />
           <span className=" text-2xl font-bold inline">{post.user.name}</span>
         </Link>
@@ -119,7 +123,10 @@ function PostItem({ post }) {
       </Link>
       {}
       <div className="flex justify-end mt-8 space-x-4 text-xl ">
-        <FaRegCommentAlt onClick={fetchComments} />
+        <div onClick={fetchComments} className="flex space-x-4 text-gray-600  hover:text-black  duration-700 ">
+          <span className="text-sm">Show all comments</span>
+        <FaRegCommentAlt  />
+        </div>
         <FaThumbsUp />
         <FaThumbsDown />
       </div>
@@ -127,7 +134,7 @@ function PostItem({ post }) {
         <PostCommentForm id={post._id} addComment={addComment} />
 
         <div className="mt-6 p-2 ">
-          {loading ? (
+          {loading   ? (
             <Spinner />
           ) : (
             <CommentList comments={comments} deleteComment={deleteComment} />
