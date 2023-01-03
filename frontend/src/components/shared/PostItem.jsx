@@ -23,7 +23,7 @@ function PostItem({ post }) {
   
     try {
       setLoading(true);
-      await fetch(`http://localhost:3000/api/comment/${commentId}`, {
+      await fetch(`/api/comment/${commentId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -44,7 +44,7 @@ function PostItem({ post }) {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/posts/${id}/comments`, {
+      const res = await fetch(`/api/posts/${id}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
