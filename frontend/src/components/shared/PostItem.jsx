@@ -76,7 +76,7 @@ function PostItem({ post }) {
         setLoading(true);
         setHidden(false);
         const res = await fetch(
-          `http://localhost:3000/api/posts/${post._id}/comments`
+          `/api/posts/${post._id}/comments`
         );
         const comments = await res.json();
         console.log(comments)

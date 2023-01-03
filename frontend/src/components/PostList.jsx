@@ -16,7 +16,7 @@ function PostList({userId}) {
     return <Spinner/>
   }
   if(posts.length  === 0){
-    return <p className=" bold text-center m-10 text-sm md:text-xl p-4 shadow-xl rounded-xl">There are no posts to be shown on this profile</p>
+    return <p className=" bold text-center m-10 text-sm md:text-xl p-4 shadow-xl rounded-xl">There are no posts to be shown on</p>
   }
   return posts.map((post) => <PostItem post={post} key={post._id} />);
 }
