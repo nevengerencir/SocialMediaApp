@@ -46,14 +46,11 @@ if(process.env.NODE_ENV === 'production'){
 
 app.use(errorHandler);
 
-connectDB().then(() => {
-  app.listen(PORT || 8000, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-  console.log(`server...`.rainbow);
-})
 
-
+app.listen(PORT || 8000, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+console.log(`server...`.rainbow);
 
 // Handle unhandled rejections
 process.on("unhandledRejection", (err, promise) => {
