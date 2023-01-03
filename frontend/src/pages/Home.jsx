@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PostList from "../components/PostList";
 import { reset } from "../features/post/postSlice";
 import { toast } from "react-toastify";
+import Spinner from "../components/shared/Spinner";
 
 
 function Home() {
@@ -22,10 +23,7 @@ function Home() {
       if (isError) {
         toast.error(message);
       }
-      if (isSucess) {
-        dispatch(reset());
-      }
-    }, []);
+    }, [isError]);
 
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -36,14 +34,17 @@ function Home() {
     }
   }, [user, navigate]);
 
+  
   return (
     <>
+    {
+      !isLoading && user ? 
       <section className="mb-10">
-        <h1>Welcome back</h1>
+        <h1>Welcome back {user.user.name}</h1>
         <p className="opacity-40  text-2xl mt-6">
-         {item}
-        </p>
+{item}        </p>
       </section>
+      : null}
       
       <PostList />
 

@@ -1,7 +1,7 @@
 const express = require("express");
+const path = require('path')
 const dotenv = require("dotenv").config();
 const connectDB = require("./config/db.js");
-const Post = require("../backend/models/Post");
 
 const cookieParser = require("cookie-parser");
 const colors = require("colors");
@@ -28,6 +28,21 @@ app.use(urlencoded({ extended: false }));
 app.use("/api/users", users);
 app.use("/api/posts", posts);
 app.use("/api/comment", comments);
+
+
+// Serve Frontend
+if(process.env.NODE_ENV === 'production'){
+  // Setting build folder as static
+  app.use(express.static(path.join(__dirname, '../frontend/build')))
+
+  app.get('*', (req,res)=> res.sendFile(__dirname,'../', 'frontend', 'build','index.html'))
+} else {
+  app.get('/', (req,res)=>{
+    res.status(200).json({
+      message: 'Welcome to my Social Media app'
+    })
+  })
+}
 
 app.use(errorHandler);
 

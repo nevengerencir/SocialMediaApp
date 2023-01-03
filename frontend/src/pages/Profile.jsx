@@ -22,17 +22,14 @@ function Profile() {
     if (isError) {
       toast.error(message);
     }
-    if (isSucess) {
-      dispatch(reset());
-    }
-  }, []);
+  }, [isError, isSucess]);
 
  
 
   return (
     <>
       <BackButton url="/" />
-      <h1 className="text-center ">Your profile</h1>
+      { user.user._id === userId ? <h1 className="text-center "> Your profile</h1> : ''}
       {user.user._id === userId ?   <PostForm /> : null}
       <PostList userId={userId} />
     </>

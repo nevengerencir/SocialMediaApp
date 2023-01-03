@@ -2,13 +2,14 @@ import { FaRegCommentAlt, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import CommentList from "./CommentList";
 import Spinner from "../shared/Spinner";
 import { Link } from "react-router-dom";
-import { FaRegTrashAlt, FaWindows } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import PostCommentForm from "./PostCommentForm";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost } from "../../features/post/postSlice";
 import { useState } from "react";
 
 function PostItem({ post }) {
+
   const [isHidden, setHidden] = useState(true);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,12 +19,15 @@ function PostItem({ post }) {
   const dispatch = useDispatch();
   const deleteItem = { post };
 
-  const deleteComment = async (commentId) => {
+  const deleteComment = async (commentId, token) => {
   
     try {
       setLoading(true);
       await fetch(`http://localhost:3000/api/comment/${commentId}`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
       });
       setComments((prev) =>
         prev.filter((element) => element._id !== `${commentId}`)
@@ -44,6 +48,7 @@ function PostItem({ post }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(commentData),
       });
@@ -88,6 +93,7 @@ function PostItem({ post }) {
   if(!user){
     return null
   }
+  
     return (
     <div className="bg-white  shadow-xl rounded-xl border my-4 p-4 relative">
       <div className=" mb-10 md:flex md:justify-between relative">

@@ -10,7 +10,7 @@ function Comment({ comment, deleteComment }) {
       {user.user._id === comment.user._id ? (
         <FaRegTrashAlt
           className="absolute top-0 right-2 text-md hover:text-xl duration-200"
-          onClick={() => deleteComment(comment._id)}
+          onClick={() => deleteComment(comment._id, user.token)}
         />
       ) : null}
       <span className="absolute bottom-0 right-0 p-2 text-xs opacity-60">

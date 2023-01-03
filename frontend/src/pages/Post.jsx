@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getPost, reset } from "../features/post/postSlice";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BackButton from "../components/shared/BackButton";
 import Spinner from "../components/shared/Spinner";
 import PostItem from "../components/shared/PostItem";
@@ -23,13 +23,11 @@ function Post() {
     dispatch(getPost(postId));
   }, [isError, message, postId]);
 
-  if (!post || isLoading) {
-    return <Spinner />;
-  }
+  
   return (
     <div className="h-screen">
       <BackButton url={"/"} />
-      <PostItem post={post} />
+   { (!post || isLoading) ? <Spinner/>:  <PostItem post={post} />}
       </div>
   );
 }
