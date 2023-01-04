@@ -10,7 +10,7 @@ const { registerUser, loginUser, getMe } = require("../controllers/auth");
 
 // router.route("/").post(loginUser);
 
-router.route("/register").post(protect, registerUser);
+router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 
 router.route("/getme").get(protect, getMe);
