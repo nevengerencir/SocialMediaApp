@@ -14,7 +14,7 @@ const protect = asyncHandler(async (req, res, next) => {
   // Make sure token exists
 
   if (!token) {
-    return next(new ErrorResponse("checking the error", 401));
+    return next(new ErrorResponse("Access not allowed", 401));
   }
 
   try {
